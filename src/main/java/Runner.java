@@ -8,11 +8,23 @@
 * This is my own work as defined by
 *    the University's Academic Integrity Policy.
 **/
+
+import javax.swing.JOptionPane;
+import java.io.*;
+import java.util.Scanner;
+
 public class Runner {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Welcome to ADS Assignment Starter!");
-        System.out.println("This is a basic Java project template.");
+        //Taking the file location and Reading the file
+        String filePath = JOptionPane.showInputDialog("Enter the file path with file name:");
+        System.out.println(filePath);
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        String verticesLine = br.readLine();
+
+
+        System.out.println(verticesLine);
         System.out.println("You can modify this file to implement your assignment requirements.");
         
     }
