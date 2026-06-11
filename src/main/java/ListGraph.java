@@ -19,7 +19,7 @@ public class ListGraph extends AbstractGraph {
      * An array of Lists to contain the edges that
      * originate with each vertex.
      */
-    public List<Edge>[] edges;
+    private List<Edge>[] edges;
 
     /**
      * Construct a graph with the specified number of vertices and directionality.
@@ -79,6 +79,22 @@ public class ListGraph extends AbstractGraph {
         }
 // Assert: All edges for source checked.
         return null; // Desired edge not found.
+    }
+
+    /**
+     * Print the vertices and corresponding edge list.
+     **/
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int v = 0; v < getNumV(); v++) {
+            sb.append(v).append(": ");
+            for (Edge e : edges[v]) {
+                sb.append(e).append("  ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
 }

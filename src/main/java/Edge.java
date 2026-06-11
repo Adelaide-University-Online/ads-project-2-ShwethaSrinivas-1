@@ -54,6 +54,6 @@ class Edge {
 
     @Override
     public String toString() {
-        return "(" + source + ", " + dest + "): " + weight;
+        return "(" + source + ", " + dest + ")";
     }
 }

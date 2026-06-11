@@ -114,8 +114,7 @@ public class Runner {
         System.out.println("Items in courseList: " + Arrays.toString(courses));
         System.out.println("Concurrent study value: " + concurrentStudy);
         System.out.println(courseIndex);
-
-        System.out.println(Arrays.toString(courseGraph.edges));
+        System.out.println(courseGraph);
 
     }
 
