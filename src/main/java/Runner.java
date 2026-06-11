@@ -1,31 +1,83 @@
 /**
-* File: filename.java
-* Description: A brief description of this Java module.
-* Author: Steve Jobs
-* Student ID: 12345678
-* Email ID: jobst007
-* AI Tool Used: Y/N (This includes all AI Tools e.g. ChatGPT, Microsoft or Github Copiliot etc... Please leave blank if you do not wish to share this information)
-* This is my own work as defined by
-*    the University's Academic Integrity Policy.
-**/
+ * File: Runner.java
+ * Description: This class has the main function. It takes user input for file path and number of concurrent subjects user can pick.
+ * Author: Shwetha Srinivas
+ * Student ID: A3150322
+ * Email ID: a3150322@adelaide.edu.au
+ * AI Tool Used: N
+ * This is my own work as defined by
+ *    the University's Academic Integrity Policy.
+ **/
 
 import javax.swing.JOptionPane;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Runner {
     
     public static void main(String[] args) throws IOException {
-        System.out.println("Welcome to ADS Assignment Starter!");
-        //Taking the file location and Reading the file
-        String filePath = JOptionPane.showInputDialog("Enter the file path with file name:");
-        System.out.println(filePath);
-        BufferedReader br = new BufferedReader(new FileReader(filePath));
-        String verticesLine = br.readLine();
+
+        /*
+          Printing the welcome screen and getting user inputs.
+          First asking for file path and reading it.
+         */
+        System.out.println("==============================");
+        System.out.println("           OptiTime");
+        System.out.println("==============================");
+
+        int concurrentStudy = 0;
+        String verticesLine;
+        String[] courses;
+        LinkedList<String> courseList = new LinkedList<>();
+
+        // Getting path from user and reading the file data
+        boolean fileRead = false;
+
+        while(!fileRead) {
+
+            String filePath = JOptionPane.showInputDialog("Enter the file path with file name:");
+            // Adding null check to allow cancelling
+            if (filePath == null) return;
+
+            filePath = filePath.replace("\"", "");
+
+            try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+                // Read first line and create array
+                verticesLine = br.readLine();
+                courses = verticesLine.split(",\\s*");
+
+                //Insert into LinkedList
+                Collections.addAll(courseList, courses);
+
+                fileRead = true;
+            } catch (Exception e) {
+                System.out.println("Invalid file path. Provide a valid path" + "\n" + e.getMessage());
+            }
+
+        }
 
 
-        System.out.println(verticesLine);
-        System.out.println("You can modify this file to implement your assignment requirements.");
+        boolean validInput = false;
+        while (!validInput) {
+            String input = JOptionPane.showInputDialog("Enter number of courses student can pick concurrently:");
+            // Adding null check to allow cancelling
+            if (input == null) return;
+
+            try {
+                concurrentStudy = Integer.parseInt(input);
+                if (concurrentStudy > 0) {
+                    validInput = true;
+                } else {
+                    System.out.println("Please enter a positive integer.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a whole number (e.g., 4).");
+            }
+        }
+
+        System.out.println("Items in courseList: " + courseList);
+        System.out.println("Concurrent study value: " + concurrentStudy);
         
     }
     
