@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.*;
 
 public class Runner {
-    
+
     public static void main(String[] args) throws IOException {
 
         /*
@@ -25,15 +25,21 @@ public class Runner {
         System.out.println("           OptiTime");
         System.out.println("==============================");
 
+        /*
+          Variables declaration
+         */
         int concurrentStudy = 0;
         String verticesLine;
-        String[] courses;
-        LinkedList<String> courseList = new LinkedList<>();
+        String[] courses = null;
+        ListGraph courseGraph;
+        int numV = 0;
+        LinkedList<String> prereqLines = new LinkedList<>();
+
 
         // Getting path from user and reading the file data
         boolean fileRead = false;
 
-        while(!fileRead) {
+        while (!fileRead) {
 
             String filePath = JOptionPane.showInputDialog("Enter the file path with file name:");
             // Adding null check to allow cancelling
@@ -41,20 +47,49 @@ public class Runner {
 
             filePath = filePath.replace("\"", "");
 
-            try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
                 // Read first line and create array
                 verticesLine = br.readLine();
                 courses = verticesLine.split(",\\s*");
 
-                //Insert into LinkedList
-                Collections.addAll(courseList, courses);
+                numV = courses.length;
 
+                // Reading the prerequisite lines
+                String prereqLine;
+                while ((prereqLine = br.readLine()) != null) {
+                    prereqLines.add(prereqLine);
+                }
                 fileRead = true;
-            } catch (Exception e) {
-                System.out.println("Invalid file path. Provide a valid path" + "\n" + e.getMessage());
+            } catch (FileNotFoundException e) {
+                System.out.println("Invalid file path. Provide a valid path" + "\n" + e.getMessage()); // Updated later to filenotfound to show the right error to user
+            } catch (IOException e) {
+                System.out.println("An error occurred while reading the file: " + e.getMessage());  // Updated later as file reading logic is with in the try block
             }
+        }
 
+        courseGraph = new ListGraph(numV, true);
+
+        /*
+          Creating hashmap for the vertices stored in courses array
+         */
+
+        HashMap<String, Integer> courseIndex = new HashMap<>();
+        for (int i = 0; i < numV; i++) {
+            courseIndex.put(courses[i], i);
+        }
+
+        /*
+          Processing Prerequisite lines and adding Edges to Graph
+         */
+
+        for (String line : prereqLines) {
+            String[] coursesInLine = line.split(",\\s*");
+            Integer childIndex = courseIndex.get(coursesInLine[0]);
+            for (int i = 1; i < coursesInLine.length; i++) {
+                Integer prereqIndex = courseIndex.get(coursesInLine[i].trim());
+                courseGraph.insert(new Edge(prereqIndex, childIndex));
+            }
         }
 
 
@@ -76,9 +111,12 @@ public class Runner {
             }
         }
 
-        System.out.println("Items in courseList: " + courseList);
+        System.out.println("Items in courseList: " + Arrays.toString(courses));
         System.out.println("Concurrent study value: " + concurrentStudy);
-        
+        System.out.println(courseIndex);
+
+        System.out.println(Arrays.toString(courseGraph.edges));
+
     }
-    
+
 }

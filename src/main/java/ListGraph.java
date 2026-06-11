@@ -19,7 +19,7 @@ public class ListGraph extends AbstractGraph {
      * An array of Lists to contain the edges that
      * originate with each vertex.
      */
-    private List<Edge>[] edges;
+    public List<Edge>[] edges;
 
     /**
      * Construct a graph with the specified number of vertices and directionality.
