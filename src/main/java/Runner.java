@@ -221,7 +221,7 @@ public class Runner {
     /*
       Using recursive function call to count the levels of dependency for each vertex.
     */
-    private static int calcDependantLevels(Graph graph, int v, int[] tailSize) {
+    public static int calcDependantLevels(Graph graph, int v, int[] tailSize) {
         if (tailSize[v] != 0) {
             return tailSize[v];
         }
